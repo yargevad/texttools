@@ -73,14 +73,12 @@ func main() {
 					cols = append(cols, tmpCols...)
 				}
 
-				log.Printf("DEBUG: range %d-%d\n", start, finish)
 			} else {
 				// single column number
 				c, err := strconv.Atoi(colSpec)
 				if err != nil {
 					log.Fatal(err)
 				}
-				log.Printf("DEBUG: single %d\n", c)
 				cols = append(cols, int64(c-1))
 			}
 		}
