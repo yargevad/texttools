@@ -1,10 +1,10 @@
-// subdoc takes a list of filenames, comparing their contents,
-// and reports cases where the entire contents of one file
+// subdoc takes a list of filenames, compares their content,
+// and reports cases where the entire content of one file
 // is also present in another file.
 //
-// file contents can optionally be treated as json objects with --json-key;
-// in that case, the contents of the specified json key is compared, instead
-// of the entire contents of each file.
+// file content can optionally be treated as json objects with --json-key;
+// in that case, the content of the specified json key is compared, instead
+// of the entire content of each file.
 package main
 
 import (
@@ -60,7 +60,11 @@ func main() {
 
 	sort.Sort(sort.Reverse(Files(files)))
 	for idx1, f1 := range files {
-		fmt.Fprintf(os.Stdout, "% 8d %s\n", len(f1.Contents), f1.Filename)
+		if *jsonKey != "" {
+			fmt.Fprintf(os.Stdout, "% 8d %s (%s)\n", len(f1.Contents), f1.Filename, *jsonKey)
+		} else {
+			fmt.Fprintf(os.Stdout, "% 8d %s\n", len(f1.Contents), f1.Filename)
+		}
 		if idx1 < len(files)-1 {
 			var val1 []byte
 			var err error
@@ -90,11 +94,7 @@ func main() {
 					continue
 				}
 
-				if *jsonKey != "" {
-					fmt.Fprintf(os.Stdout, "[%s] (key %s) contains [%s]\n", f1.Filename, *jsonKey, f2.Filename)
-				} else {
-					fmt.Fprintf(os.Stdout, "[%s] contains [%s]\n", f1.Filename, f2.Filename)
-				}
+				fmt.Fprintf(os.Stdout, "           %s\n", f2.Filename)
 			}
 		}
 	}
