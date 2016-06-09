@@ -17,6 +17,7 @@ import (
 	"sort"
 
 	"github.com/buger/jsonparser"
+	"github.com/fatih/color"
 )
 
 type File struct {
@@ -94,7 +95,7 @@ func main() {
 					continue
 				}
 
-				fmt.Fprintf(os.Stdout, "           %s\n", f2.Filename)
+				fmt.Fprintf(os.Stdout, "           %s\n", color.RedString(f2.Filename))
 			}
 		}
 	}
