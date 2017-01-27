@@ -21,7 +21,7 @@ the second, inclusive. Numbers or number ranges may be preceded by a dash, which
 selects all fields or columns from 1 to the last number. Numbers and number
 ranges may be repeated, overlapping, and in any order.
 
-TODO: Numbers or number ranges may be followed by a dash, which selects all fields or columns from the last number to the end of the line.
+TODO: Numbers or number ranges may be followed by a dash, which selects all fields or columns from the last number to the end of the line. (note: this is why int64 is used instead of int, so the `finish` portion can be math.MaxInt64)
 TODO: If a field or column is specified multiple times, it will appear only once in the output.
 TODO: It is not an error to select fields or columns not present in the input line.
 */
@@ -111,4 +111,5 @@ func main() {
 			log.Fatal(err)
 		}
 	}
+	csvOut.Flush()
 }
