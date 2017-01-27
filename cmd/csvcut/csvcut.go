@@ -31,6 +31,11 @@ var colSep *regexp.Regexp = regexp.MustCompile(`\s+|\s*,\s*`)
 
 func main() {
 	flag.Parse()
+	args := flag.Args()
+	// assume first argument after flags is filename
+	if len(args) >= 1 {
+		in = &args[0]
+	}
 
 	if in == nil || strings.TrimSpace(*in) == "" {
 		log.Fatal("FATAL: --in is a required parameter\n")
