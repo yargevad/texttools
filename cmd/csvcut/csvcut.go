@@ -11,8 +11,6 @@ import (
 	"strings"
 )
 
-var in = flag.String("in", "", "csv filename to read")
-
 /* From `cut` docs:
 The [fieldSpec] option argument is a comma or whitespace separated set of
 numbers and/or number ranges. Number ranges consist of a number, a dash (`-'),
@@ -25,11 +23,12 @@ TODO: Numbers or number ranges may be followed by a dash, which selects all fiel
 TODO: If a field or column is specified multiple times, it will appear only once in the output.
 TODO: It is not an error to select fields or columns not present in the input line.
 */
-var fieldSpec = flag.String("f", "", "which fields to output")
-
-var colSep *regexp.Regexp = regexp.MustCompile(`\s+|\s*,\s*`)
 
 func main() {
+	var colSep *regexp.Regexp = regexp.MustCompile(`\s+|\s*,\s*`)
+	var in = flag.String("in", "", "csv filename to read")
+	var fieldSpec = flag.String("f", "", "which fields to output")
+
 	flag.Parse()
 	args := flag.Args()
 	// assume first argument after flags is filename
@@ -60,7 +59,7 @@ func main() {
 					if err != nil {
 						log.Fatal(err)
 					}
-					start = int64(c - 1)
+					start = int64(c)
 				}
 
 				if strings.TrimSpace(r[1]) == "" {
@@ -99,6 +98,7 @@ func main() {
 
 	csvData := make([]string, len(cols))
 	for {
+		// encoding/csv asserts that each line has the same number of columns
 		csvRead, err := csvIn.Read()
 		if err == io.EOF {
 			break
